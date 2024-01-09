@@ -9,16 +9,15 @@ jobs:
     steps:
       - name: Print branch name
         if: github.event_name == 'pull_request'
-        run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"
+        run: echo "${GITHUB_HEAD_REF}"
       
-      - name: Get branch Name
-        run: echo 'The branch name is' $BRANCH_NAME
+  
 
       - name: Remove Older Build pack
         run: echo 'The branch name is' $BRANCH_NAME
 
       - name: Set newer Heroku Buildpack 
-        uses: actions/checkout@v3
+        run: echo 'The branch name is' $BRANCH_NAME
 
       - name: Trigger a herokubuild on sfdocs-help
-        uses: actions/checkout@v3
+        run: echo 'The branch name is' $BRANCH_NAME
