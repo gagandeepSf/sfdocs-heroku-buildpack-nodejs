@@ -31,13 +31,7 @@ jobs:
          HEROKU_TOKEN: ${{ secrets.HEROKU_API_KEY }}
         run: |
           echo "UPDATE_OLDER_BUILDPACK=$(curl  -o /dev/null -s -w "%{http_code}\n" -n -X PUT https://api.heroku.com/apps/650b637e-ffd2-45c5-bd24-11e7e49487d2/buildpack-installations -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN" -d "{\"updates\":[{ \"buildpack\": "\"https://github.com/SalesforceDocs-Bot/sfdocs-heroku-buildpack-nodejs#${GITHUB_HEAD_REF}\""}]}")" >> $GITHUB_ENV
-          if [ "$UPDATE_OLDER_BUILDPACK" -eq 200 ]; then
-            echo "Build result is 200. Deploying..."
-            # Your deployment command here
-          else
-            echo "Build result is not 200. Not able to connect to heroku.Kindly check heroku credentials in Secrets "
-            exit 1
-          fi
+
 
 
 
@@ -46,10 +40,27 @@ jobs:
          HEROKU_TOKEN: ${{ secrets.HEROKU_API_KEY }}      
         run: |
           echo "TRIGGER_BUILD=$(curl  -o /dev/null -s -w "%{http_code}\n" -n -X POST https://kolkrabbi.heroku.com/apps/650b637e-ffd2-45c5-bd24-11e7e49487d2/github/push -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN" -d "{"branch":"main"}")" >> $GITHUB_ENV
-          if [ "$TRIGGER_BUILD" -eq 202 ]; then
-            echo "Build result is 202. Your Build has been accepted .Deploying...Track your deployment here -->https://dashboard.heroku.com/apps/sfdocs-buildpack-update/deploy/github"
+
+      - name: Checking Status http_codes
+        run: |
+          if [ "$UPDATE_OLDER_BUILDPACK" -eq 200 ]; then
+            echo "Build result is 200. Deploying..."
             # Your deployment command here
           else
-            echo "Build result is not 202. Not able to connect to heroku.Kindly check heroku credentials in Secrets.Track your deployment here -->https://dashboard.heroku.com/apps/sfdocs-buildpack-update/deploy/github "
+            echo "Build result is not 200. Not able to connect to heroku.Kindly check heroku credentials in Secrets "
             exit 1
-          fi  
+          fi          
+          if [ "$REMOVE_OLDER_BUILDPACK" -eq 200 ]; then
+            echo "Build result is 200. Deploying..."
+            # Your deployment command here
+          else
+            echo "Build result is not 200. Not able to connect to heroku.Kindly check heroku credentials in Secrets "
+            exit 1
+          fi         
+          if [ "$TRIGGER_BUILD" -eq 202 ]; then
+            echo "Build result is 202. Deploying... Your Build Has been accepted track build at https://dashboard.heroku.com/apps/sfdocs-buildpack-update/deploy/github"
+            # Your deployment command here
+          else
+            echo "Build result is not 200. Not able to connect to heroku.Kindly check heroku credentials in Secrets.Your Build Has been accepted track build at https://dashboard.heroku.com/apps/sfdocs-buildpack-update/deploy/github "
+            exit 1
+          fi           
