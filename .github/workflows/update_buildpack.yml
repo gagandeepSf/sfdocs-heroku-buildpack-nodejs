@@ -19,7 +19,7 @@ jobs:
           -H '"Accept": "application/vnd.heroku+json; version=3"' \
           -H  '"Authorization": "Bearer 973aa154-f3e4-445f-9095-c4e098be71a9"' \
           -H  '"Content-Type": "application/json"'\
-          --data "{"updates":[]}" \
+          --data '{"updates":[]}' \
           https://api.heroku.com//apps/650b637e-ffd2-45c5-bd24-11e7e49487d2/buildpack-installations 
 
       - name: Set newer Heroku Buildpack 
