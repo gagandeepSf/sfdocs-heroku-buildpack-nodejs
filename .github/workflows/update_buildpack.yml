@@ -17,7 +17,7 @@ jobs:
         env:
          HEROKU_TOKEN: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          curl -X PUT   https://api.heroku.com//apps/650b637e-ffd2-45c5-bd24-11e7e49487d2/buildpack-installations  -H '"Accept": "application/vnd.heroku+json; version=3"' -H  '"Authorization": "Bearer $HEROKU_TOKEN"' -H  '"Content-Type": "application/json"' -d '{"updates":[]}'
+          curl --http1.1 -X PUT   https://api.heroku.com//apps/650b637e-ffd2-45c5-bd24-11e7e49487d2/buildpack-installations  -H '"Accept": "application/vnd.heroku+json; version=3"' -H  '"Authorization": "Bearer $HEROKU_TOKEN"' -H  '"Content-Type": "application/json"' -d '{"updates":[]}'
         
 
       - name: Set newer Heroku Buildpack 
