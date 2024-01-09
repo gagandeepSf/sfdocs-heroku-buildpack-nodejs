@@ -17,9 +17,8 @@ jobs:
         env:
          HEROKU_TOKEN: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          echo "$HEROKU_TOKEN"
-          auth="Bearer " + "$HEROKU_TOKEN"
-          echp "$auth"
+          echo "Bearer " + "$HEROKU_TOKEN"
+          
           
       - name: Set newer Heroku Buildpack 
         run: echo 'The branch name is' 
