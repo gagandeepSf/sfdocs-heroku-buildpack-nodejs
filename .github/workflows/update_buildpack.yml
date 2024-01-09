@@ -5,7 +5,7 @@ on:
     types: [opened, edited, synchronize, reopened]
 jobs:
   Test_Result:
-    runs-on: salesforcedocs-ubuntu
+    runs-on: ubuntu-latest
     steps:
       - name: Print branch name
         if: github.event_name == 'pull_request'
