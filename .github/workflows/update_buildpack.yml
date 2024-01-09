@@ -29,10 +29,17 @@ jobs:
 
 
       - name: Checking Status Codes
-        if: $REMOVE_OLDER_BUILDPACK != '200' && $UPDATE_OLDER_BUILDPACK != '201'
+        
         run: |
           echo 'Removing Older Build Pack' $REMOVE_OLDER_BUILDPACK
           echo 'Update Older Build Pack' $UPDATE_OLDER_BUILDPACK
+          if [ "$UPDATE_OLDER_BUILDPACK" -eq 200 ]; then
+            echo "Build result is 200. Deploying..."
+            # Your deployment command here
+          else
+            echo "Build result is not 200. Deploy step failed."
+            exit 1
+          fi
 
       - name: Trigger a herokubuild on sfdocs-help
         run: echo 'The branch name is' $BRANCH_NAME
