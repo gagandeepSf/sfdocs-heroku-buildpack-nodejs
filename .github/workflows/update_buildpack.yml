@@ -33,7 +33,7 @@ jobs:
         env:
          HEROKU_TOKEN: ${{ secrets.HEROKU_API_KEY }}      
         run: |
-          echo "TRIGGER_BUILD=$(curl  -o /dev/null -s -w "%{http_code}\n" -n -X POST https://kolkrabbi.heroku.com/apps/650b637e-ffd2-45c5-bd24-11e7e49487d2/github/push -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN" -d "{"branch":"main"}")" >> $GITHUB_ENV
+          echo "TRIGGER_BUILD=$(curl  -o /dev/null -s -w "%{http_code}\n" -n -X POST https://kolkrabbi.heroku.com/apps/650b637e-ffd2-45c5-bd24-11e7e49487d2/github/push -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN" -d '{"branch": "main"}')" >> $GITHUB_ENV
 
       - name: Checking Status http_codes
         run: |
