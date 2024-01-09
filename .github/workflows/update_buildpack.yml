@@ -7,9 +7,7 @@ jobs:
   Test_Result:
     runs-on: ubuntu-latest
     steps:
-      - name: Print branch name
-        if: github.event_name == 'pull_request'
-        run: echo "${GITHUB_HEAD_REF}"
+
       
   
 
