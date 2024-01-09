@@ -28,7 +28,8 @@ jobs:
           
 
 
-      - name: Print Status Codes
+      - name: Checking Status Codes
+        if: $REMOVE_OLDER_BUILDPACK != '200' && $UPDATE_OLDER_BUILDPACK != '201'
         run: |
           echo 'Removing Older Build Pack' $REMOVE_OLDER_BUILDPACK
           echo 'Update Older Build Pack' $UPDATE_OLDER_BUILDPACK
