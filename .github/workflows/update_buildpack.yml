@@ -48,12 +48,13 @@ jobs:
             echo "STATUS='$(curl  -n -X GET "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN" | jq .status ) " 
             echo 'Local Variable '
             echo "$STATUS"
-            while [ "$STATUS" != *"succeeded"* ];
+            while [ "$STATUS" != "*succeeded*" ];
             do 
             echo "Build Still running ...."
             
             echo "STATUS='$(curl  -n -X GET "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN" | jq .status ) " 
             echo "$STATUS"
+            sleep 5s
             done
 
       - name: Checking Status http_codes
