@@ -45,9 +45,9 @@ jobs:
             echo '${{ fromJson(env.TRIGGER_BUILD).build.id }}'
             echo "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}"
             echo "value here "
-            echo "STATUS='$(curl  -n -X GET "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN"  ) | jq .status" 
+            echo "STATUS='$(curl  -n -X GET "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN"  ) " 
             echo 'Local Variable '
-            echo "$STATUS"
+            echo "${{ fromJson("$STATUS").status}}"
 
       - name: Checking Status http_codes
         run: |
