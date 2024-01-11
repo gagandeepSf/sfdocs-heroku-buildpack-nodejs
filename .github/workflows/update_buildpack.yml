@@ -62,10 +62,4 @@ jobs:
             echo "$herokuApi/apps/appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}"
             echo "value here "
             echo "STATUS='{"status": "pending"}'" >> $GITHUB_ENV
-            while [ "${{ fromJson(env.STATUS).status}}" != "succeeded" ];
-            do 
-            echo "Build Still running ...."
-            
-            echo "STATUS=$(curl -n "$herokuApi/apps/appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}"  -H "Accept: application/vnd.heroku+json; version=3" -H   "Authorization: $HEROKU_TOKEN")" >> $GITHUB_ENV
-            echo "$STATUS"
-            done
+            echo $STATUS
