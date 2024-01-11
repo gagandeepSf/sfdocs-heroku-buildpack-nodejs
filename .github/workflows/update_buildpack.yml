@@ -45,14 +45,14 @@ jobs:
             echo '${{ fromJson(env.TRIGGER_BUILD).build.id }}'
             echo "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}"
             echo "value here "
-            echo "STATUS='$(curl  -n -X GET "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN" | jq .status ) " 
+            echo "STATUS='$(curl  -n -X GET "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN" | jq .status ) " >> $GITHUB_ENV
             echo 'Local Variable '
             echo "$STATUS"
             while [ "$STATUS" != "*succeeded*" ];
             do 
             echo "Build Still running ...."
             
-            echo "STATUS='$(curl  -n -X GET "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN" | jq .status ) " 
+            echo "STATUS='$(curl  -n -X GET "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN" | jq .status ) " >> $GITHUB_ENV
             echo "$STATUS"
             sleep 5s
             done
