@@ -45,8 +45,8 @@ jobs:
             echo '${{ fromJson(env.TRIGGER_BUILD).build.id }}'
             echo "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}"
             echo "value here "
-            echo "STATUS='$(curl -n -X GET "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}" -H "Accept: application/vnd.heroku+json; version=3" -H "Authorization: $HEROKU_TOKEN" )" >> $GITHUB_ENV
-            echo "Values is " $STATUS
+            echo "STATUS='$(curl  -n -X GET "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN"  )" >> $GITHUB_ENV
+            
 
       - name: Checking Status http_codes
         run: |
