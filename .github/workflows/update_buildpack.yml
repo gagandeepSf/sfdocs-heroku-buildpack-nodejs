@@ -35,7 +35,7 @@ jobs:
         env:
          HEROKU_TOKEN: ${{ secrets.HEROKU_API_KEY }}      
         run: |
-          echo "TRIGGER_BUILD=$(curl  -o /dev/null -s -w "%{http_code}\n" -n -X POST "$kolkarabiApi/$appId/github/push" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN" -d '{"branch": "main"}')" >> $GITHUB_ENV
+          echo "TRIGGER_BUILD=$(curl  -n -X POST "$kolkarabiApi/$appId/github/push" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN" -d '{"branch": "main"}')" >> $GITHUB_ENV
 
       - name: Checking Status http_codes
         run: |
@@ -53,13 +53,10 @@ jobs:
             echo "Build result is not 200. Not able to connect to heroku.Kindly check heroku credentials in Secrets "
             exit 1
           fi         
-          if [ "$TRIGGER_BUILD" -eq 202 ]; then
-            echo "Build result is 202. Deploying... Your Build Has been accepted track build at https://dashboard.heroku.com/apps/sfdocs-buildpack-update/deploy/github"
-            # Your deployment command here
-          else
-            echo "Build result is not 200. Not able to connect to heroku.Kindly check heroku credentials in Secrets.Your Build Has been accepted track build at https://dashboard.heroku.com/apps/sfdocs-buildpack-update/deploy/github "
-            exit 1
-          fi  
+      
 
-      # - name: Wait for build to pass
-      #   timeout-minutes: 5
+      - name: Wait for build to pass
+        timeout-minutes: 5
+        run: |
+            echo '${{ fromJson(env.TRIGGER_BUILD).build.id }}'
+            echo "value here "
