@@ -37,6 +37,15 @@ jobs:
         run: |
           echo "TRIGGER_BUILD=$(curl  -n -X POST "$kolkarabiApi/$appId/github/push" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN" -d '{"branch": "main"}')" >> $GITHUB_ENV
 
+      - name: Wait for build to pass
+        timeout-minutes: 5
+        run: |
+            echo '${{ fromJson(env.TRIGGER_BUILD).build.id }}'
+            echo "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}"
+            echo "value here "
+            echo "STATUS='$(curl -n -X GET "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}"  -H "Accept: application/vnd.heroku+json; version=3" -H   "Authorization: $HEROKU_TOKEN")" >> $GITHUB_ENV
+            echo "Values is " $STATUS
+
       - name: Checking Status http_codes
         run: |
           if [ "$UPDATE_OLDER_BUILDPACK" -eq 200 ]; then
@@ -48,6 +57,7 @@ jobs:
           fi          
           if [ "$REMOVE_OLDER_BUILDPACK" -eq 200 ]; then
             echo "Build result is 200. Deploying..."
+            echo "$STATUS"
             # Your deployment command here
           else
             echo "Build result is not 200. Not able to connect to heroku.Kindly check heroku credentials in Secrets "
@@ -55,11 +65,3 @@ jobs:
           fi         
       
 
-      - name: Wait for build to pass
-        timeout-minutes: 5
-        run: |
-            echo '${{ fromJson(env.TRIGGER_BUILD).build.id }}'
-            echo "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}"
-            echo "value here "
-            echo "STATUS='$(curl -n "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}"  -H "Accept: application/vnd.heroku+json; version=3" -H   "Authorization: $HEROKU_TOKEN")" >> $GITHUB_ENV
-            echo "Values is " $STATUS
