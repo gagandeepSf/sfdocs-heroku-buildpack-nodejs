@@ -52,8 +52,8 @@ jobs:
             do 
             echo "Build Still running ...."
             
-            echo "STATUS='$(curl  -n -X GET "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN" | jq .status ) " >> $GITHUB_ENV
-            echo "$STATUS"
+            export STATUS=$(curl  -n -X GET "$herokuApi/$appId/builds/${{ fromJson(env.TRIGGER_BUILD).build.id }}" -H "Content-Type: application/json" -H "Accept: application/vnd.heroku+json; version=3" -H  "Authorization: $HEROKU_TOKEN" | jq .status )
+            echo $STATUS
             sleep 5s
             done
 
